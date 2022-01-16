@@ -12,7 +12,7 @@ const CONFIG = {
     btnNo: 'Không nha :3',
     question: 'Trên thế giới hơn 7 tỉ người mà sao bạn lại yêu mình <3',
     btnReply: 'Gửi cho bạn <3',
-    messDesc: 'vậy thì nhắn cho mình đi',
-    btnAccept: 'Okiiiii lun <3',
+    messDesc: ' vì anh Hoàng rất đẹp zai ',
+    btnAccept: 'Okiiiii vậy thì nhắn cho mình đi',
     messLink: 'https://facebook.com/hoang.d.ng.98
 }
