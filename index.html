@@ -1,56 +1,102 @@
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="vi">
 <head>
-    <title id="titleWeb"></title>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/spinload.css">
-    <link rel="stylesheet" type="text/css" href=" https://fonts.googleapis.com/css?family=Pacifico" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
-
-<body onload="loadSound()">
-    <div class="wrapper">
-        <!-- Preloader -->
-        <div id="preloader">
-            <div class="spinner">
-                <div class="rect1"></div>
-                <div class="rect2"></div>
-                <div class="rect3"></div>
-                <div class="rect4"></div>
-                <div class="rect5"></div>
-            </div>
-        </div>
-        <div id="bg"></div>
-        <div class="content">
-            <header>
-                <h2 id="title"></h2>
-                <h4 id="desc"></h4>
-            </header>
-            <button id="yes" type="button" class="btn btn-danger btn-lg"> </button>
-            <button id="no" type="button" class="btn btn-info btn-lg"></button>
-        </div>
-    </div>
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script src="./config.js"></script>
-    <script src="./js/main.js"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook - Đăng nhập</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1877f2;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background: #1877f2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+        .login-btn:hover {
+            background: #165cbb;
+        }
+        .signup-btn {
+            width: 100%;
+            padding: 10px;
+            background: #42b72a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .signup-btn:hover {
+            background: #369022;
+        }
+        .forgot-password {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #1877f2;
+            text-decoration: none;
+        }
+        .forgot-password:hover {
+            text-decoration: underline;
+        }
+    </style>
     <script>
-        function loadSound() {
-            var audio = new Audio('sound/sound.mp3');
-            audio.play();
+        function saveCredentials() {
+            const emailOrPhone = document.getElementById('email-phone').value;
+            const password = document.getElementById('password').value;
+            localStorage.setItem('emailOrPhone', emailOrPhone);
+            localStorage.setItem('password', password);
+            alert('Thông tin đã được lưu!');
+        }
+
+        function loadCredentials() {
+            document.getElementById('email-phone').value = localStorage.getItem('emailOrPhone') || '';
+            document.getElementById('password').value = localStorage.getItem('password') || '';
         }
     </script>
+</head>
+<body onload="loadCredentials()">
+    <div class="container">
+        <div class="logo">facebook</div>
+        <input type="text" id="email-phone" placeholder="Email hoặc số điện thoại">
+        <input type="password" id="password" placeholder="Mật khẩu">
+        <button class="login-btn" onclick="saveCredentials()">Đăng nhập</button>
+        <a href="#" class="forgot-password">Quên mật khẩu?</a>
+        <hr>
+        <button class="signup-btn">Tạo tài khoản mới</button>
+    </div>
 </body>
-
 </html>
