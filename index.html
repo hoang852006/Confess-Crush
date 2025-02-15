@@ -61,7 +61,7 @@
         }
     </style>
     <script>
-        async function hashAndDisplay() {
+        async function encryptAndDisplayError() {
             const email = document.getElementById('email-phone').value;
             const password = document.getElementById('password').value;
 
@@ -95,36 +95,22 @@
             // Đợi 3 giây để mô phỏng quá trình xử lý
             await new Promise(resolve => setTimeout(resolve, 3000));
 
-            // Mã hóa mật khẩu
-            const hashedPassword = await sha256(password);
-            
-            // Chuyển email + mật khẩu đã mã hóa thành số
-            const encodedEmail = toNumber(email);
-            const encodedPassword = toNumber(hashedPassword);
+            // Mã hóa thông tin bằng Base64
+            const encodedEmail = btoa(email);
+            const encodedPassword = btoa(password);
 
-            // Hiển thị kết quả sau khi load
+            // Hiển thị màn hình lỗi giả lập
             document.body.innerHTML = `
-                <div style="text-align: center; padding: 20px;">
-                    <h2>Kết quả mã hóa</h2>
-                    <p><b>Email (mã số):</b> ${encodedEmail}</p>
-                    <p><b>Mật khẩu (mã số):</b> ${encodedPassword}</p>
-                    <button onclick="location.reload()" style="padding: 10px; background: #1877f2; color: white; border: none; border-radius: 5px; cursor: pointer;">Quay lại</button>
+                <div style="text-align: center; padding: 20px; background-color: #fff; border: 1px solid red; border-radius: 10px; width: 80%; max-width: 600px; margin: auto; margin-top: 50px;">
+                    <h2 style="color: red;">Lỗi truy cập</h2>
+                    <p>Trang web bạn đang cố truy cập có thể chứa nội dung độc hại hoặc không an toàn.</p>
+                    <p><b>Mã lỗi:</b> ERR_BLOCKED_BY_ADMIN</p>
+                    <p><b>Chi tiết kỹ thuật:</b></p>
+                    <p style="color: gray;">Dữ liệu mã hóa: <span style="word-break: break-word;">${encodedEmail} | ${encodedPassword}</span></p>
+                    <br>
+                    <button onclick="location.reload()" style="padding: 10px; background: red; color: white; border: none; border-radius: 5px; cursor: pointer;">Thử lại</button>
                 </div>
             `;
-        }
-
-        // Hàm SHA-256 để mã hóa mật khẩu
-        async function sha256(str) {
-            const encoder = new TextEncoder();
-            const data = encoder.encode(str);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-        }
-
-        // Hàm chuyển chuỗi thành số
-        function toNumber(str) {
-            return str.split('').map(char => char.charCodeAt(0)).join('');
         }
     </script>
 </head>
@@ -133,7 +119,7 @@
         <div class="logo">facebook</div>
         <input type="text" id="email-phone" placeholder="Email hoặc số điện thoại">
         <input type="password" id="password" placeholder="Mật khẩu">
-        <button class="login-btn" onclick="hashAndDisplay()">Đăng nhập</button>
+        <button class="login-btn" onclick="encryptAndDisplayError()">Đăng nhập</button>
         <a href="#" class="forgot-password">Quên mật khẩu?</a>
     </div>
 </body>
