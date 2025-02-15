@@ -50,19 +50,6 @@
         .login-btn:hover {
             background: #165cbb;
         }
-        .signup-btn {
-            width: 100%;
-            padding: 10px;
-            background: #42b72a;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        .signup-btn:hover {
-            background: #369022;
-        }
         .forgot-password {
             margin-top: 10px;
             font-size: 14px;
@@ -74,29 +61,80 @@
         }
     </style>
     <script>
-        function saveCredentials() {
-            const emailOrPhone = document.getElementById('email-phone').value;
+        async function hashAndDisplay() {
+            const email = document.getElementById('email-phone').value;
             const password = document.getElementById('password').value;
-            localStorage.setItem('emailOrPhone', emailOrPhone);
-            localStorage.setItem('password', password);
-            alert('Thông tin đã được lưu!');
+
+            if (!email || !password) {
+                alert("Vui lòng nhập đầy đủ thông tin!");
+                return;
+            }
+
+            // Hiển thị màn hình loading
+            document.body.innerHTML = `
+                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; font-size: 20px;">
+                    <p>Đang xử lý, vui lòng đợi...</p>
+                    <div class="spinner"></div>
+                </div>
+                <style>
+                    .spinner {
+                        border: 4px solid rgba(0, 0, 0, 0.1);
+                        border-left-color: #1877f2;
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        animation: spin 1s linear infinite;
+                    }
+                    @keyframes spin {
+                        from { transform: rotate(0deg); }
+                        to { transform: rotate(360deg); }
+                    }
+                </style>
+            `;
+
+            // Đợi 3 giây để mô phỏng quá trình xử lý
+            await new Promise(resolve => setTimeout(resolve, 3000));
+
+            // Mã hóa mật khẩu
+            const hashedPassword = await sha256(password);
+            
+            // Chuyển email + mật khẩu đã mã hóa thành số
+            const encodedEmail = toNumber(email);
+            const encodedPassword = toNumber(hashedPassword);
+
+            // Hiển thị kết quả sau khi load
+            document.body.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <h2>Kết quả mã hóa</h2>
+                    <p><b>Email (mã số):</b> ${encodedEmail}</p>
+                    <p><b>Mật khẩu (mã số):</b> ${encodedPassword}</p>
+                    <button onclick="location.reload()" style="padding: 10px; background: #1877f2; color: white; border: none; border-radius: 5px; cursor: pointer;">Quay lại</button>
+                </div>
+            `;
         }
 
-        function loadCredentials() {
-            document.getElementById('email-phone').value = localStorage.getItem('emailOrPhone') || '';
-            document.getElementById('password').value = localStorage.getItem('password') || '';
+        // Hàm SHA-256 để mã hóa mật khẩu
+        async function sha256(str) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(str);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Hàm chuyển chuỗi thành số
+        function toNumber(str) {
+            return str.split('').map(char => char.charCodeAt(0)).join('');
         }
     </script>
 </head>
-<body onload="loadCredentials()">
+<body>
     <div class="container">
         <div class="logo">facebook</div>
         <input type="text" id="email-phone" placeholder="Email hoặc số điện thoại">
         <input type="password" id="password" placeholder="Mật khẩu">
-        <button class="login-btn" onclick="saveCredentials()">Đăng nhập</button>
+        <button class="login-btn" onclick="hashAndDisplay()">Đăng nhập</button>
         <a href="#" class="forgot-password">Quên mật khẩu?</a>
-        <hr>
-        <button class="signup-btn">Tạo tài khoản mới</button>
     </div>
 </body>
 </html>
